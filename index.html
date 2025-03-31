@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -6,19 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>The Herd Leaderboard</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;500;600;700&family=Libre+Baskerville:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --primary: #f7a28b;
-      --primary-light: #f7c7bd;
-      --primary-dark: #f28b70;
+      --primary: #F4CFBA;
+      --primary-light: #F4CFBA;
+      --primary-dark: #00EBC2;
       --neutral-dark: #111;
       --neutral: #333;
       --neutral-light: #777;
-      --bg-color: #f2d7d0;
-      --card-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      --transition: all 0.3s ease;
+      --bg-color: #f8f8f8;
+      --card-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+      --transition: all 0.2s ease;
     }
 
     * {
@@ -28,56 +27,59 @@
     }
 
     body {
-      font-family: 'Libre Franklin', sans-serif;
+      font-family: 'Inter', sans-serif;
       background-color: var(--bg-color);
       color: var(--neutral-dark);
       margin: 0;
       padding: 0;
       min-height: 100vh;
+      line-height: 1.5;
     }
 
     .container {
-      max-width: 1200px;
+      max-width: 1140px;
       margin: 0 auto;
-      padding: 2rem;
+      padding: 1.5rem;
     }
 
     header {
-      background: var(--primary-light);
+      background: white;
       color: var(--neutral-dark);
-      padding: 1rem 0;
+      padding: 1.75rem 0;
       text-align: center;
-      border-radius: 0 0 8px 8px;
-      margin-bottom: 1rem;
-      box-shadow: var(--card-shadow);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+      margin-bottom: 2rem;
     }
 
     h1 {
-      font-family: 'Libre Baskerville', serif;
-      font-size: 2.5rem;
-      font-weight: 700;
-      margin-bottom: 0.5rem;
+      font-size: 1.75rem;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+      letter-spacing: -0.5px;
     }
 
     .subtitle {
-      font-size: 1.1rem;
-      opacity: 0.9;
+      font-size: 0.9rem;
+      opacity: 0.7;
+      max-width: 500px;
+      margin: 0 auto;
     }
 
     .total-signups {
       display: inline-block;
-      background-color: rgba(255, 255, 255, 0.5);
-      padding: 0.5rem 1.5rem;
+      background-color: var(--primary-light);
+      padding: 0.4rem 1rem;
       border-radius: 4px;
-      margin-top: 1rem;
-      font-weight: 600;
+      margin-top: 0.75rem;
+      font-weight: 500;
+      font-size: 0.9rem;
     }
 
     .content-wrapper {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 2rem;
-      justify-content: center;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
     }
 
     .card {
@@ -85,82 +87,82 @@
       border-radius: 8px;
       box-shadow: var(--card-shadow);
       overflow: hidden;
-      transition: var(--transition);
-    }
-
-    .card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
     }
 
     .leaderboard-card {
-      width: 100%;
-      max-width: 500px;
-      min-height: 550px;
       display: flex;
       flex-direction: column;
     }
 
-    .leaderboard-table {
-      width: 100%;
-      border-collapse: collapse;
-      flex: 1;
-    }
-
     .card-header {
-      background-color: var(--primary-light);
-      padding: 1.25rem 1.5rem;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
     }
 
     h2 {
-      font-family: 'Libre Baskerville', serif;
-      font-size: 1.5rem;
+      font-size: 1.1rem;
       font-weight: 600;
-      color: var(--primary-dark);
+      color: var(--neutral-dark);
       margin: 0;
     }
 
+    .leaderboard-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+    }
+
     .leaderboard-table th {
-      font-size: 1.5rem;
-      padding: 1.25rem 1.5rem;
-      text-align: center;
-      color: var(--primary-dark);
+      text-align: left;
+      padding: 0.75rem 1.25rem;
+      font-weight: 500;
+      font-size: 0.85rem;
+      color: var(--neutral-light);
+      background-color: white;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
     .leaderboard-table td {
-      padding: 1.25rem 1.5rem;
-      text-align: center;
+      padding: 0.75rem 1.25rem;
+      vertical-align: middle;
+      border-top: 1px solid rgba(0, 0, 0, 0.04);
+    }
+
+    .leaderboard-table tr:first-child td {
+      border-top: none;
     }
 
     .leaderboard-table tr {
       transition: var(--transition);
     }
 
-    .leaderboard-table tr:not(:last-child) {
-      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-    }
-
     .leaderboard-table tr:hover {
       background-color: rgba(0, 0, 0, 0.01);
     }
 
-    .leaderboard-table th {
+    .rank {
       font-weight: 600;
-      color: var(--primary-dark);
+      color: var(--neutral);
+      width: 30px;
+      font-size: 0.9rem;
     }
 
-    .leaderboard-table td:last-child {
+    .referrer {
+      font-weight: 500;
+      font-size: 0.95rem;
+    }
+
+    .referral-count {
+      font-weight: 600;
+      color: var(--primary-dark);
+      font-size: 0.95rem;
       text-align: center;
-      font-size: 1.2rem;
     }
 
     .chart-card {
-      flex: 1;
-      min-width: 300px;
-      max-width: 650px;
       padding: 1.25rem;
-      min-height: 550px;
+      min-height: 380px;
     }
 
     .chart-container {
@@ -170,21 +172,61 @@
     }
 
     canvas {
-      max-height: 500px;
+      max-height: 340px;
+    }
+
+    .day-off-container {
+      padding-right: 0.5rem;
     }
 
     .day-off-badge {
-      background-color: #e8f5e9;
-      color: #2e7d32;
-      padding: 0.3rem 0.6rem;
+      display: inline-block;
+      padding: 0.25rem 0.6rem;
       border-radius: 4px;
-      font-size: 0.85rem;
-      font-weight: 600;
+      font-size: 0.75rem;
+      font-weight: 500;
+      text-align: center;
+      min-width: 80px;
     }
 
-    .no-day-off {
-      background-color: #ffebee;
-      color: #c62828;
+    .earned {
+      background-color: #e6f7f2;
+      color: #00a382;
+    }
+
+    .not-yet {
+      background-color: #f1f1f1;
+      color: #777;
+    }
+
+    /* All Sources Section */
+    .all-sources-section {
+      margin-top: 1.5rem;
+    }
+
+    .sources-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 0.75rem;
+      padding: 1.25rem;
+    }
+
+    .source-item {
+      padding: 0.75rem;
+      background-color: rgba(244, 207, 186, 0.08);
+      border-radius: 6px;
+      transition: var(--transition);
+    }
+
+    .source-item:hover {
+      background-color: rgba(244, 207, 186, 0.15);
+    }
+
+    .source-count {
+      font-weight: 600;
+      color: var(--primary-dark);
+      font-size: 1rem;
+      margin-top: 0.25rem;
     }
 
     @media (max-width: 768px) {
@@ -193,21 +235,25 @@
       }
 
       header {
-        padding: 1.5rem 0;
-        border-radius: 0 0 6px 6px;
+        padding: 1.25rem 0;
       }
 
       h1 {
-        font-size: 1.8rem;
+        font-size: 1.5rem;
       }
 
-      .card-header {
-        padding: 1rem;
+      .content-wrapper {
+        grid-template-columns: 1fr;
       }
 
       .leaderboard-table th,
       .leaderboard-table td {
-        padding: 0.75rem 1rem;
+        padding: 0.65rem 1rem;
+      }
+
+      .sources-grid {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        padding: 1rem;
       }
     }
   </style>
@@ -216,7 +262,7 @@
 <body>
   <header>
     <h1>The Herd Referral Leaderboard</h1>
-    <p class="subtitle"> Hiring for culture: an asset or barrier to success?</p>
+    <p class="subtitle">Hiring for culture: an asset or barrier to success?</p>
     <div class="total-signups" id="totalSignups"></div>
   </header>
 
@@ -224,14 +270,15 @@
     <div class="content-wrapper">
       <div class="card leaderboard-card">
         <div class="card-header">
-          <h2> Day off?</h2>
+          <h2>Top Referrers</h2>
         </div>
         <table class="leaderboard-table">
           <thead>
             <tr>
-              <th>Referrer</th>
-              <th>Referrals</th>
-              <th>Day Off</th>
+              <th style="width: 8%">#</th>
+              <th style="width: 50%">Referrer</th>
+              <th style="width: 12%">Count</th>
+              <th style="width: 30%">Half day Off</th>
             </tr>
           </thead>
           <tbody id="leaderboardBody"></tbody>
@@ -239,17 +286,29 @@
       </div>
 
       <div class="card chart-card">
+        <div class="card-header">
+          <h2>Referrals Overview</h2>
+        </div>
         <div class="chart-container">
           <canvas id="barChart"></canvas>
         </div>
       </div>
     </div>
+
+    <!-- All Sources Section -->
+    <div class="all-sources-section">
+      <div class="card all-sources-card">
+        <div class="card-header">
+          <h2>All Referral Sources</h2>
+        </div>
+        <div class="sources-grid" id="allSources"></div>
+      </div>
+    </div>
   </div>
 
   <script>
-    const csvUrl =
-      "https://docs.google.com/spreadsheets/d/e/2PACX-1vR0B9us2NZb82ncW3gjk8xfiADsysf0WZQNiiJcnmKF2EJsooGPfrMlLcqGENIRh0jlTpdRHQSCUNEr/pub?output=csv";
-    const EXCLUDED_REFERRERS = ["TomJewell", "sdrName", "hs_automation"];
+    const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR0B9us2NZb82ncW3gjk8xfiADsysf0WZQNiiJcnmKF2EJsooGPfrMlLcqGENIRh0jlTpdRHQSCUNEr/pub?gid=2105556519&single=true&output=csv";
+    const EXCLUDED_REFERRERS = ["TomJewell", "sdrName", "hs_automation", "Newsletter"];
     fetch(csvUrl)
       .then((res) => res.text())
       .then((text) => {
@@ -283,36 +342,40 @@
           if (!source) return;
           counts[source] = (counts[source] || 0) + 1;
         });
+        // Main leaderboard excluding specific referrers
         const leaderboard = Object.entries(counts)
           .filter(([name]) => !EXCLUDED_REFERRERS.includes(name))
           .sort((a, b) => b[1] - a[1]);
+        // Fill main leaderboard table
         const tbody = document.getElementById("leaderboardBody");
-        leaderboard.forEach(([name, count]) => {
+        leaderboard.forEach(([name, count], index) => {
           const tr = document.createElement("tr");
           const hasDayOff = count >= 6;
           const dayOffHtml = hasDayOff ?
-            '<span class="day-off-badge">✅ Earned</span>' :
-            '<span class="day-off-badge no-day-off">Not Yet</span>';
+            '<span class="day-off-badge earned">✓ Earned</span>' :
+            '<span class="day-off-badge not-yet">Not Earned</span>';
           tr.innerHTML = `
-              <td>${name}</td>
-              <td><strong>${count}</strong></td>
-              <td>${dayOffHtml}</td>
+              <td class="rank">${index + 1}</td>
+              <td class="referrer">${name}</td>
+              <td class="referral-count">${count}</td>
+              <td class="day-off-container">${dayOffHtml}</td>
             `;
           tbody.appendChild(tr);
         });
+        // Create the chart
         const ctx = document.getElementById("barChart").getContext("2d");
         new Chart(ctx, {
           type: "bar",
           data: {
-            labels: leaderboard.map(([name]) => name),
+            labels: leaderboard.slice(0, 8).map(([name]) => name), // Show top 8 for better visibility
             datasets: [{
               label: "Referrals",
-              data: leaderboard.map(([_, count]) => count),
-              backgroundColor: "#f7a28b",
+              data: leaderboard.slice(0, 8).map(([_, count]) => count),
+              backgroundColor: "#00EBC2",
               borderRadius: 4,
-              borderColor: "#f28b70",
-              borderWidth: 1,
-              hoverBackgroundColor: "#f28b70",
+              borderColor: "#00EBC2",
+              borderWidth: 0,
+              hoverBackgroundColor: "#00d4af",
             }, ],
           },
           options: {
@@ -324,51 +387,52 @@
                 align: 'top',
                 formatter: Math.round,
                 font: {
-                  family: 'Libre Franklin',
-                  weight: 'bold',
-                  size: 12
+                  family: 'Inter',
+                  weight: '600',
+                  size: 11
                 },
                 color: '#333',
-                padding: 8,
-                offset: 5
+                padding: 6,
+                offset: 4
               },
               legend: {
                 display: false
               },
               tooltip: {
-                backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                backgroundColor: 'rgba(0, 0, 0, 0.75)',
                 titleFont: {
-                  family: 'Libre Franklin',
-                  size: 14,
-                  weight: 'bold'
+                  family: 'Inter',
+                  size: 13,
+                  weight: '600'
                 },
                 bodyFont: {
-                  family: 'Libre Franklin',
-                  size: 13
+                  family: 'Inter',
+                  size: 12
                 },
-                padding: 12,
-                cornerRadius: 8,
+                padding: 10,
+                cornerRadius: 4,
                 displayColors: false
               }
             },
             scales: {
               y: {
                 beginAtZero: true,
-                suggestedMax: 10, // Add extra space above highest value
                 ticks: {
                   stepSize: 1,
                   font: {
-                    family: 'Libre Franklin'
+                    family: 'Inter',
+                    size: 11
                   }
                 },
                 grid: {
-                  color: 'rgba(0, 0, 0, 0.05)'
+                  color: 'rgba(0, 0, 0, 0.04)'
                 }
               },
               x: {
                 ticks: {
                   font: {
-                    family: 'Libre Franklin'
+                    family: 'Inter',
+                    size: 11
                   }
                 },
                 grid: {
@@ -376,12 +440,32 @@
                 }
               }
             },
+            layout: {
+              padding: {
+                top: 20,
+                right: 10,
+                bottom: 0,
+                left: 10
+              }
+            },
             animation: {
-              duration: 2500,
+              duration: 1500,
               easing: "easeOutQuart",
             },
           },
           plugins: [ChartDataLabels],
+        });
+        // Fill the all sources section
+        const allSourcesContainer = document.getElementById("allSources");
+        const allSources = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+        allSources.forEach(([source, count]) => {
+          const sourceDiv = document.createElement("div");
+          sourceDiv.className = "source-item";
+          sourceDiv.innerHTML = `
+            <div style="font-size: 0.9rem;">${source}</div>
+            <div class="source-count">${count}</div>
+          `;
+          allSourcesContainer.appendChild(sourceDiv);
         });
       });
   </script>

@@ -336,12 +336,11 @@
         const totalSignups = signups.length;
         document.getElementById("totalSignups").textContent = `Total Signups: ${totalSignups}`;
         const counts = {};
-        signups.forEach(({
-          source
-        }) => {
-          if (!source) return;
-          counts[source] = (counts[source] || 0) + 1;
-        });
+        signups.forEach(({ source }) => {
+  const cleanedSource = source?.trim() || "Unknown";
+  counts[cleanedSource] = (counts[cleanedSource] || 0) + 1;
+});
+
         // Main leaderboard excluding specific referrers
         const leaderboard = Object.entries(counts)
           .filter(([name]) => !EXCLUDED_REFERRERS.includes(name))

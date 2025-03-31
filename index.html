@@ -307,19 +307,15 @@
   </div>
 
   <script>
-    const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR0B9us2NZb82ncW3gjk8xfiADsysf0WZQNiiJcnmKF2EJsooGPfrMlLcqGENIRh0jlTpdRHQSCUNEr/pub?gid=2105556519&single=true&output=csv";
+    const scriptUrl = "https://script.google.com/macros/s/AKfycbx9W4Zy5NwLxIAKMTdaQcIOjO5HepSggjZU4HE8lfUAV6927hhap6MVGHIEXsJoC9BXWQ/exec";
     const EXCLUDED_REFERRERS = ["TomJewell", "sdrName", "hs_automation", "Newsletter"];
-    fetch(csvUrl)
-      .then((res) => res.text())
-      .then((text) => {
-        const rows = text
-          .trim()
-          .split("\n")
-          .map((r) => r.split(","));
-        const headers = rows[0];
-        const nameIndex = headers.indexOf("Name");
-        const emailIndex = headers.indexOf("Email");
-        const sourceIndex = headers.findIndex((h) => h.trim().toLowerCase().includes("custom"));
+    fetch(scriptUrl)
+      .then((res) => res.json())
+      .then((rows) => {
+        const headers = rows[0].map(h => h.trim().toLowerCase());
+        const nameIndex = headers.findIndex(h => h === "name");
+        const emailIndex = headers.findIndex(h => h === "email");
+        const sourceIndex = headers.findIndex(h => h.includes("custom"));
         const signups = [];
         for (let i = 1; i < rows.length; i++) {
           const row = rows[i];
@@ -336,11 +332,12 @@
         const totalSignups = signups.length;
         document.getElementById("totalSignups").textContent = `Total Signups: ${totalSignups}`;
         const counts = {};
-        signups.forEach(({ source }) => {
-  const cleanedSource = source?.trim() || "Unknown";
-  counts[cleanedSource] = (counts[cleanedSource] || 0) + 1;
-});
-
+        signups.forEach(({
+          source
+        }) => {
+          const cleanedSource = source?.trim() || "Unknown";
+          counts[cleanedSource] = (counts[cleanedSource] || 0) + 1;
+        });
         // Main leaderboard excluding specific referrers
         const leaderboard = Object.entries(counts)
           .filter(([name]) => !EXCLUDED_REFERRERS.includes(name))

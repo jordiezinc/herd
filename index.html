@@ -8,254 +8,282 @@
   <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --primary: #F4CFBA;
-      --primary-light: #F4CFBA;
-      --primary-dark: #00EBC2;
-      --neutral-dark: #111;
-      --neutral: #333;
-      --neutral-light: #777;
-      --bg-color: #f8f8f8;
-      --card-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
-      --transition: all 0.2s ease;
-    }
+ :root {
+  --primary: #F4CFBA;
+  --primary-light: #F4CFBA;
+  --primary-dark: #00EBC2;
+  --neutral-dark: #111;
+  --neutral: #333;
+  --neutral-light: #777;
+  --bg-color: #f8f8f8;
+  --card-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+  --transition: all 0.2s ease;
+}
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-    body {
-      font-family: 'Inter', sans-serif;
-      background-color: var(--bg-color);
-      color: var(--neutral-dark);
-      margin: 0;
-      padding: 0;
-      min-height: 100vh;
-      line-height: 1.5;
-    }
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg-color);
+  color: var(--neutral-dark);
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  line-height: 1.5;
+}
 
-    .container {
-      max-width: 1140px;
-      margin: 0 auto;
-      padding: 1.5rem;
-    }
+.container {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
 
-    header {
-      background: white;
-      color: var(--neutral-dark);
-      padding: 1.75rem 0;
-      text-align: center;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-      margin-bottom: 2rem;
-    }
+header {
+  background: white;
+  color: var(--neutral-dark);
+  padding: 1.75rem 0;
+  text-align: center;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  margin-bottom: 2rem;
+}
 
-    h1 {
-      font-size: 1.75rem;
-      font-weight: 600;
-      margin-bottom: 0.25rem;
-      letter-spacing: -0.5px;
-    }
+h1 {
+  font-size: 1.75rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  letter-spacing: -0.5px;
+}
 
-    .subtitle {
-      font-size: 0.9rem;
-      opacity: 0.7;
-      max-width: 500px;
-      margin: 0 auto;
-    }
+.subtitle {
+  font-size: 0.9rem;
+  opacity: 0.7;
+  max-width: 500px;
+  margin: 0 auto;
+}
 
-    .total-signups {
-      display: inline-block;
-      background-color: var(--primary-light);
-      padding: 0.4rem 1rem;
-      border-radius: 4px;
-      margin-top: 0.75rem;
-      font-weight: 500;
-      font-size: 0.9rem;
-    }
+.total-signups {
+  display: inline-block;
+  background-color: var(--primary-light);
+  padding: 0.4rem 1rem;
+  border-radius: 4px;
+  margin-top: 0.75rem;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
 
-    .content-wrapper {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-      gap: 1.5rem;
-      margin-bottom: 1.5rem;
-    }
+.content-wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
 
-    .card {
-      background: white;
-      border-radius: 8px;
-      box-shadow: var(--card-shadow);
-      overflow: hidden;
-    }
+.card {
+  background: white;
+  border-radius: 8px;
+  box-shadow: var(--card-shadow);
+  overflow: hidden;
+}
 
-    .leaderboard-card {
-      display: flex;
-      flex-direction: column;
-    }
+.leaderboard-card {
+  display: flex;
+  flex-direction: column;
+  max-height: 380px;
+}
 
-    .card-header {
-      padding: 1rem 1.25rem;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-    }
+.card-header {
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
 
-    h2 {
-      font-size: 1.1rem;
-      font-weight: 600;
-      color: var(--neutral-dark);
-      margin: 0;
-    }
+h2 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--neutral-dark);
+  margin: 0;
+}
 
-    .leaderboard-table {
-      width: 100%;
-      border-collapse: separate;
-      border-spacing: 0;
-    }
+.table-container {
+  overflow-y: auto;
+  max-height: 308px;
+  scrollbar-width: thin;
+}
 
-    .leaderboard-table th {
-      text-align: left;
-      padding: 0.75rem 1.25rem;
-      font-weight: 500;
-      font-size: 0.85rem;
-      color: var(--neutral-light);
-      background-color: white;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
+.table-container::-webkit-scrollbar {
+  width: 6px;
+}
 
-    .leaderboard-table td {
-      padding: 0.75rem 1.25rem;
-      vertical-align: middle;
-      border-top: 1px solid rgba(0, 0, 0, 0.04);
-    }
+.table-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
 
-    .leaderboard-table tr:first-child td {
-      border-top: none;
-    }
+.table-container::-webkit-scrollbar-thumb {
+  background: #ddd;
+  border-radius: 4px;
+}
 
-    .leaderboard-table tr {
-      transition: var(--transition);
-    }
+.table-container::-webkit-scrollbar-thumb:hover {
+  background: #ccc;
+}
 
-    .leaderboard-table tr:hover {
-      background-color: rgba(0, 0, 0, 0.01);
-    }
+.leaderboard-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
 
-    .rank {
-      font-weight: 600;
-      color: var(--neutral);
-      width: 30px;
-      font-size: 0.9rem;
-    }
+.leaderboard-table th {
+  text-align: left;
+  padding: 0.75rem 1.25rem;
+  font-weight: 500;
+  font-size: 0.85rem;
+  color: var(--neutral-light);
+  background-color: white;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06);
+}
 
-    .referrer {
-      font-weight: 500;
-      font-size: 0.95rem;
-    }
+.leaderboard-table td {
+  padding: 0.75rem 1.25rem;
+  vertical-align: middle;
+  border-top: 1px solid rgba(0, 0, 0, 0.04);
+}
 
-    .referral-count {
-      font-weight: 600;
-      color: var(--primary-dark);
-      font-size: 0.95rem;
-      text-align: center;
-    }
+.leaderboard-table tr:first-child td {
+  border-top: none;
+}
 
-    .chart-card {
-      padding: 1.25rem;
-      min-height: 380px;
-    }
+.leaderboard-table tr {
+  transition: var(--transition);
+}
 
-    .chart-container {
-      position: relative;
-      height: 100%;
-      width: 100%;
-    }
+.leaderboard-table tr:hover {
+  background-color: rgba(0, 0, 0, 0.01);
+}
 
-    canvas {
-      max-height: 340px;
-    }
+.rank {
+  font-weight: 600;
+  color: var(--neutral);
+  width: 30px;
+  font-size: 0.9rem;
+}
 
-    .day-off-container {
-      padding-right: 0.5rem;
-    }
+.referrer {
+  font-weight: 500;
+  font-size: 0.95rem;
+}
 
-    .day-off-badge {
-      display: inline-block;
-      padding: 0.25rem 0.6rem;
-      border-radius: 4px;
-      font-size: 0.75rem;
-      font-weight: 500;
-      text-align: center;
-      min-width: 80px;
-    }
+.referral-count {
+  font-weight: 600;
+  color: var(--primary-dark);
+  font-size: 0.95rem;
+  text-align: center;
+}
 
-    .earned {
-      background-color: #e6f7f2;
-      color: #00a382;
-    }
+.chart-card {
+  padding: 1.25rem;
+  min-height: 380px;
+}
 
-    .not-yet {
-      background-color: #f1f1f1;
-      color: #777;
-    }
+.chart-container {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
 
-    /* All Sources Section */
-    .all-sources-section {
-      margin-top: 1.5rem;
-    }
+canvas {
+  max-height: 340px;
+}
 
-    .sources-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-      gap: 0.75rem;
-      padding: 1.25rem;
-    }
+.day-off-container {
+  padding-right: 0.5rem;
+}
 
-    .source-item {
-      padding: 0.75rem;
-      background-color: rgba(244, 207, 186, 0.08);
-      border-radius: 6px;
-      transition: var(--transition);
-    }
+.day-off-badge {
+  display: inline-block;
+  padding: 0.25rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-align: center;
+  min-width: 80px;
+}
 
-    .source-item:hover {
-      background-color: rgba(244, 207, 186, 0.15);
-    }
+.earned {
+  background-color: #e6f7f2;
+  color: #00a382;
+}
 
-    .source-count {
-      font-weight: 600;
-      color: var(--primary-dark);
-      font-size: 1rem;
-      margin-top: 0.25rem;
-    }
+.not-yet {
+  background-color: #f1f1f1;
+  color: #777;
+}
 
-    @media (max-width: 768px) {
-      .container {
-        padding: 1rem;
-      }
+/* All Sources Section */
+.all-sources-section {
+  margin-top: 1.5rem;
+}
 
-      header {
-        padding: 1.25rem 0;
-      }
+.sources-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 0.75rem;
+  padding: 1.25rem;
+}
 
-      h1 {
-        font-size: 1.5rem;
-      }
+.source-item {
+  padding: 0.75rem;
+  background-color: rgba(244, 207, 186, 0.08);
+  border-radius: 6px;
+  transition: var(--transition);
+}
 
-      .content-wrapper {
-        grid-template-columns: 1fr;
-      }
+.source-item:hover {
+  background-color: rgba(244, 207, 186, 0.15);
+}
 
-      .leaderboard-table th,
-      .leaderboard-table td {
-        padding: 0.65rem 1rem;
-      }
+.source-count {
+  font-weight: 600;
+  color: var(--primary-dark);
+  font-size: 1rem;
+  margin-top: 0.25rem;
+}
 
-      .sources-grid {
-        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-        padding: 1rem;
-      }
-    }
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+
+  header {
+    padding: 1.25rem 0;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  .content-wrapper {
+    grid-template-columns: 1fr;
+  }
+
+  .leaderboard-table th,
+  .leaderboard-table td {
+    padding: 0.65rem 1rem;
+  }
+
+  .sources-grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    padding: 1rem;
+  }
+}
   </style>
 </head>
 
@@ -272,6 +300,8 @@
         <div class="card-header">
           <h2>Top Referrers</h2>
         </div>
+          <div class="table-container">
+
         <table class="leaderboard-table">
           <thead>
             <tr>
@@ -283,6 +313,7 @@
           </thead>
           <tbody id="leaderboardBody"></tbody>
         </table>
+          </div>
       </div>
 
       <div class="card chart-card">
